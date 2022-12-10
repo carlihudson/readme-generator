@@ -1,7 +1,10 @@
+// modules required for this application 
 const inquirer = require('inquirer');
 const fs = require('fs');
-const generateMarkdown = require('generateMarkdown')
+const generateMarkdown = require('./generateMarkdown');
+const path = require('path');
 
+// array of questions for user input
 const questions = [
     {
         type: 'input',
@@ -50,22 +53,22 @@ const questions = [
     }
 ]
 
+// function to write README file
 function writeToFile(fileName, data) {
     return fs.writeFileSync(path.join(process.cwd(), fileName), data);
 }
 
+// function to initialize app
 function init() {
     inquirer
         .prompt(questions)
-
         .then(inquirerResponses => {
-            writeToFile('README.md', generateMarkdown({
-                ...inquirerResponses
-            }));
-            (err) =>
-                err ? console.log(err) : console.log('success!')
-        } 
-    }
+            writeToFile('README.md', 
+            generateMarkdown({...inquirerResponses}), (err) => err ? 
+            console.log(err) : console.log('success!'));
+            
+        });
+}
 
 // Function call to initialize app
 init()

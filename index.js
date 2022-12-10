@@ -1,9 +1,8 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-// const generateMarkdown = require('generateMarkdown')
+const generateMarkdown = require('generateMarkdown')
 
-inquirer
-  .prompt([
+const questions = [
     {
       type: 'input',
       message: 'What is the title of your project?',
@@ -49,19 +48,18 @@ inquirer
         message: "What license does this project have?",
         name: 'license',
       }
-  ])
-  .then((data) => {
-    makeFile(data)
-  });
+  ]
 
-// TODO: Create a function to write README file
-const makeFile = (data) => {
-    const fileName = 'README.md';
-    fs.writeFile(fileName, 
-        `# ${data.title} 
+  function init() {
+    inquirer
+        .prompt(questions)
+    
+        .then(inquirerResponses => {
+            writeToFile('README.md', generateMarkdown({
+        `# ${inquirerResponses.title} 
         
         ## Description
-        ${data.description} 
+        ${inquirerResponses.description} 
         
         ## Table of Contents
         - [Installation](#installation)
@@ -70,32 +68,28 @@ const makeFile = (data) => {
         - [License](#license)
         
         ## Installation
-        ${data.installation}
+        ${inquirerResponses.installation}
         
         ## Usage
-        ${data.usage}
+        ${inquirerResponses.usage}
 
         ## Contribution
-        ${data.contributions}
+        ${inquirerResponses.contributions}
 
         ## Tests
-        ${data.test}
+        ${inquirerResponses.test}
 
         ## Questions
-        If you have any questions, reach out to me at https://github.com/${data.username}, or [shoot me an email](${data.email}.)
+        If you have any questions, reach out to me at https://github.com/${inquirerResponses.username}, or [shoot me an email](${inquirerResponses.email}.)
         
         ## License
-        ${data.license} `
+        ${inquirerResponses.license} `
     , (err)=>
     err ? console.log(err) : console.log('success!')
     )}
+            };
+        
 
-// TODO: Create a function to initialize app
-function init() {}
 
 // Function call to initialize app
 init();
-
-
-
-

@@ -47,8 +47,9 @@ const questions = [
         name: 'email',
     },
     {
-        type: 'input',
-        message: "What license does this project have?",
+        type: 'list',
+        message: "What license would you like for this project?",
+        choices: ['MIT', 'GPLv3', 'ISC'],
         name: 'license',
     }
 ]
